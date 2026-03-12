@@ -208,15 +208,43 @@ def inject_css() -> None:
             font-size: 0.83rem !important;
         }
 
-        .search-clear-wrap .stButton > button {
-            padding-left: 0 !important;
-            padding-right: 0 !important;
+        .search-clear-wrap,
+        .row-limit-clear-wrap {
+            width: 100%;
+        }
+
+        .search-clear-wrap .stButton,
+        .row-limit-clear-wrap .stButton {
+            width: 100%;
+        }
+
+        .search-clear-wrap .stButton > button,
+        .row-limit-clear-wrap .stButton > button {
+            width: 100% !important;
             height: 2.5rem !important;
             min-height: 2.5rem !important;
-            font-size: 0.95rem !important;
+            padding: 0 !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
+        }
+
+        .search-clear-wrap .stButton > button > div,
+        .row-limit-clear-wrap .stButton > button > div {
+            width: 100% !important;
+            height: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .search-clear-wrap .stButton > button p,
+        .row-limit-clear-wrap .stButton > button p {
+            margin: 0 !important;
+            line-height: 1 !important;
+            text-align: center !important;
+            width: 100% !important;
+            font-size: 1.08rem !important;
         }
 
         .scroll-table-wrap {
@@ -587,7 +615,7 @@ def render_checkbox_dropdown(
             unsafe_allow_html=True,
         )
 
-        search_col, clear_col = st.columns([6.0, 1.0], gap="small", vertical_alignment="center")
+        search_col, clear_col = st.columns([5.6, 1.2], gap="small", vertical_alignment="center")
 
         with search_col:
             st.text_input(
@@ -600,11 +628,12 @@ def render_checkbox_dropdown(
         with clear_col:
             st.markdown('<div class="search-clear-wrap">', unsafe_allow_html=True)
             st.button(
-                "✕",
+                "×",
                 key=f"{search_key}_clear_button",
                 on_click=clear_search_text,
                 args=(search_key,),
                 help=f"Clear {label.lower()} search",
+                use_container_width=True,
             )
             st.markdown("</div>", unsafe_allow_html=True)
 
@@ -658,7 +687,7 @@ def clear_row_limit() -> None:
 
 
 def render_row_limit_controls() -> None:
-    input_col, clear_col = st.columns([4.25, 0.75])
+    input_col, clear_col = st.columns([4.15, 0.95], gap="small", vertical_alignment="center")
 
     with input_col:
         st.text_input(
@@ -669,7 +698,14 @@ def render_row_limit_controls() -> None:
         )
 
     with clear_col:
-        st.button("✕", key="row_limit_clear", on_click=clear_row_limit)
+        st.markdown('<div class="row-limit-clear-wrap">', unsafe_allow_html=True)
+        st.button(
+            "×",
+            key="row_limit_clear",
+            on_click=clear_row_limit,
+            use_container_width=True,
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
 
 
 def format_results_dataframe(df: pd.DataFrame) -> pd.DataFrame:
@@ -880,10 +916,7 @@ with right_col:
                     current_page = total_pages
                 st.session_state.current_page = current_page
 
-                pager_left, pager_mid, pager_right, pager_spacer, pager_text = st.columns(
-                    [1.25, 1.2, 1.25, 0.10, 2.3],
-                    gap="small",
-                )
+                pager_left, pager_mid, pager_right, pager_text = st.columns([1, 1.2, 1, 3])
 
                 with pager_left:
                     if st.button("◀ Prev Page", disabled=current_page <= 1):
@@ -904,9 +937,6 @@ with right_col:
                     if st.button("Next Page ▶", disabled=current_page >= total_pages):
                         st.session_state.current_page = current_page + 1
                         st.rerun()
-
-                with pager_spacer:
-                    st.write("")
 
                 if int(page_input) != current_page:
                     st.session_state.current_page = int(page_input)
