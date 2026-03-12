@@ -528,7 +528,7 @@ def render_sort_controls(start_year: int, end_year: int) -> None:
                 unsafe_allow_html=True,
             )
 
-            rule_col, dir_col, remove_col = st.columns([1.7, 2.0, 0.2])
+            rule_col, dir_col, remove_col = st.columns([1.65, 1.85, 0.3])
 
             with rule_col:
                 st.selectbox(
