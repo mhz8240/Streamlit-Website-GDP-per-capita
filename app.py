@@ -165,8 +165,8 @@ def inject_css() -> None:
 
         .filter-help {
             color: #667287;
-            font-size: 1rem;
-            margin-top: 0.12rem;
+            font-size: 0.83rem;
+            margin-top: -0.1rem;
             margin-bottom: 0.12rem;
         }
 
@@ -779,7 +779,7 @@ with left_col:
             nonce_key="country_checkbox_nonce",
         )
         st.markdown(
-            '<div class="filter-help">At least one country must be selected before querying.</div>',
+            '<div class="filter-help">At least one country must be selected to query.</div>',
             unsafe_allow_html=True,
         )
 
